@@ -27,4 +27,6 @@ CREATE TABLE employee (
     PRIMARY KEY (id)
 );
 
-SELECT * FROM employeeTracker
+SELECT * FROM employee;
+SELECT * FROM department;
+SELECT * FROM role;

@@ -1,0 +1,24 @@
+{
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "# Unit 12 MySQL Homework: Employee Tracker",
+  "main": "employeeTrackerCRUD.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SApuzzo27/employeeTracker.git"
+  },
+  "author": "Samantha Apuzzo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SApuzzo27/employeeTracker/issues"
+  },
+  "homepage": "https://github.com/SApuzzo27/employeeTracker#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
