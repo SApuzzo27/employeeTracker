@@ -30,30 +30,30 @@ connection.connect(function(err) {
           message: "What Would You Like To DO?",
           choices: ["ADD EMPLOYEE","VIEW EMPLOYEE","UPDATE EMPLOYEE", "ADD DEPARTMENT",  "VIEW DEPARTMENNT", "ADD ROLE", "VIEW ROLE", "EXIT"]
       })
-      .then(function(answer) {
-          // based on their answer, either add, update, or view files
-          if (answer.addViewUpdate === "ADD EMPLOYEE") {
+      .then(function(res) {
+          // based on their res, either add, update, or view files
+          if (res.addViewUpdate === "ADD EMPLOYEE") {
           addEmployee();
           }
-          else if(answer.addViewUpdate === "VIEW EMPLOYEE") {
+          else if(res.addViewUpdate === "VIEW EMPLOYEE") {
           viewEmployee();
           } 
-          else if(answer.addViewUpdate === "UPDATE EMPLOYEE") {
+          else if(res.addViewUpdate === "UPDATE EMPLOYEE") {
           updateEmployee();
           }
-          else if (answer.addViewUpdate === "ADD DEPARTMENT") {
+          else if (res.addViewUpdate === "ADD DEPARTMENT") {
             addDepartment();
           }
-          else if(answer.addViewUpdate === "VIEW DEPARTMENT") {
+          else if(res.addViewUpdate === "VIEW DEPARTMENT") {
             viewDepartment();
           } 
-          else if(answer.addViewUpdate === "ADD ROLE") {
+          else if(res.addViewUpdate === "ADD ROLE") {
             addRole();
           }
-          else if(answer.addViewUpdate === "VIEW ROLE") {
+          else if(res.addViewUpdate === "VIEW ROLE") {
             viewRole();
           } 
-          else if(answer.addViewUpdate === "EXIT") {
+          else if(res.addViewUpdate === "EXIT") {
           connection.end();
           }
       });
@@ -71,17 +71,17 @@ connection.connect(function(err) {
       {
       name: "last_name",
       type: "input",
-      message: "What is the employees last name?"
+      message: "What is the employee's last name?"
       },
       {
           name: "role_id",
           type: "input",
-          message: "What is the employees role id?"
+          message: "What is the employee's role id?"
           },
       {
       name: "manager_id",
       type: "input",
-      message: "Who is the employees manager (by id) ?",
+      message: "Who is the employee's manager (by id) ?",
       validate: function(value) {
           if (isNaN(value) === false) {
           return true;
@@ -90,16 +90,16 @@ connection.connect(function(err) {
       }
       }
   ])
-  .then(function(answer) {
+  .then(function(res) {
       var query = connection.query(
       "INSERT INTO employee SET ?",
       {
-      first_name: answer.first_name,
-      last_name: answer.last_name,
-      role_id: answer.role_id,
-      manager_id: answer.manager_id,
+      first_name: res.first_name,
+      last_name: res.last_name,
+      role_id: res.role_id,
+      manager_id: res.manager_id,
       },
-  
+
 
       function(err, res) {
       if (err) throw err;
@@ -109,8 +109,25 @@ connection.connect(function(err) {
       }
   );
   });
-
 };
+
+function viewEmployee(res) {
+    
+      connection.query("SELECT * FROM employee ", { employee: res}, function(err, res) {
+        console.table(
+        "First Name: " +
+            res[0].first_name +
+            " || Last Name: " +
+            res[0].last_name +
+            " || Role: " +
+            res[0].role_id +
+            " || Manager: " +
+            res[0].manager_id
+        );
+        viewEmployee();
+      });
+    };
+
 
 function addDepartment() {
   console.log("Inserting a new department...\n");
@@ -122,11 +139,11 @@ function addDepartment() {
   message: "What is the department name?",
   }
 ])
-.then(function(answer) {
+.then(function(res) {
   var query = connection.query(
   "INSERT INTO department SET ?",
   {
-  name: answer.name,
+  name: res.name,
   },
 
 
@@ -161,13 +178,13 @@ function addRole() {
       message: "What is the role's department id?",
   }
 ])
-.then(function(answer) {
+.then(function(res) {
   var query = connection.query(
   "INSERT INTO role SET ?",
   {
-  title: answer.title,
-  salary: answer.salary,
-  department_id: answer.department_id,
+  title: res.title,
+  salary: res.salary,
+  department_id: res.department_id,
   },
 
 
@@ -186,20 +203,20 @@ function addRole() {
   
   // function updateEmployee(){
   // console.log("Updating Employees...\n");
-  // var query = connection.query(query,{employee: answer.employee}(
+  // var query = connection.query(query,{employee: res.employee}(
   //   "UPDATE employee SET ? WHERE ? ",
   //   [
   //     {
-  //       first_name: answer.first_name
+  //       first_name: res.first_name
   //     },
   //     {
-  //       last_name: answer.last_name,
+  //       last_name: res.last_name,
   //     },
   //     {
-  //       role_id: answer.role_id,
+  //       role_id: res.role_id,
   //     },
   //     {
-  //       manager_id: answer.manager_id,
+  //       manager_id: res.manager_id,
   //     },
   //   ],
   //   function(err, res) {
