@@ -16,13 +16,13 @@ password: "Charlie27!",
 database: "employeeTrackerDB"
 });
 
-//========== Connection ID ==========================//
+// Connection
 connection.connect(function(err) {
   if (err) throw err
   console.log("Connected as Id" + connection.threadId)
   startPrompt();
 });
-//================== Initial Prompt =======================//
+// Prompt
 function startPrompt() {
   inquirer.prompt([
   {
@@ -76,7 +76,7 @@ function startPrompt() {
           }
   })
 }
-//============= View All Employees ==========================//
+// View All Employees
 function viewAllEmployees() {
   connection.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id;", 
   function(err, res) {
@@ -85,7 +85,7 @@ function viewAllEmployees() {
     startPrompt()
 })
 }
-//============= View All Roles ==========================//
+//View Roles
 function viewAllRoles() {
 connection.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;", 
 function(err, res) {
@@ -94,7 +94,8 @@ console.table(res)
 startPrompt()
 })
 }
-//============= View All Employees By Departments ==========================//
+
+// View Employees by Department
 function viewAllDepartments() {
 connection.query("SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;", 
 function(err, res) {
@@ -104,7 +105,7 @@ function(err, res) {
 })
 }
 
-//================= Select Role Quieries Role Title for Add Employee Prompt ===========//
+//Select Roles
 var roleArr = [];
 function selectRole() {
 connection.query("SELECT * FROM role", function(err, res) {
@@ -116,7 +117,7 @@ connection.query("SELECT * FROM role", function(err, res) {
 })
 return roleArr;
 }
-//================= Select Role Quieries The Managers for Add Employee Prompt ===========//
+//Select Manager 
 var managersArr = [];
 function selectManager() {
 connection.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
@@ -128,7 +129,7 @@ connection.query("SELECT first_name, last_name FROM employee WHERE manager_id IS
 })
 return managersArr;
 }
-//============= Add Employee ==========================//
+//Add Employee
 function addEmployee() { 
   inquirer.prompt([
       {
@@ -217,7 +218,7 @@ function updateEmployee() {
 });
 
 }
-//============= Add Employee Role ==========================//
+//Add Role
 function addRole() { 
 connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role",   function(err, res) {
   inquirer.prompt([
